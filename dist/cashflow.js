@@ -3,7 +3,7 @@ let selectedCashflowAge=null;
 
 function buildAnnualCashflows(p,m,baseYear=new Date().getFullYear()){
  return m.rows.filter(row=>row.age>=p.retire).map(row=>{
-  return {age:row.age,year:baseYear+row.age-p.age,savings:Math.max(0,row.expense-row.passive-row.social),social:row.social,passive:row.passive,spending:row.expense,shortfall:row.shortfall,withdrawal:row.withdrawal,spendingReduced:row.spendingReduced};
+  return {age:row.age,year:baseYear+row.age-p.age,savings:Math.max(0,row.expense-row.passive-row.social),social:row.social,passive:row.passive,spending:row.expense,shortfall:row.shortfall,withdrawal:row.withdrawal};
  });
 }
 function selectCashflowYear(age){
@@ -20,7 +20,7 @@ function selectCashflowYear(age){
 }
 function renderAnnualCashflow(p,m){
  annualCashflowRows=m?buildAnnualCashflows(p,m):[];
- $('annual-description').textContent=m&&m.reductionStartAge!==null?`Annual expenses fall to ${money(m.reducedExpenses)} from age ${m.reductionStartAge} onward.`:'Annual amounts based on the figures you enter.';
+ $('annual-description').textContent='Annual amounts based on the figures you enter.';
  const container=$('annual-cashflow-chart');
  const previousScroll=container.scrollLeft;
  if(!annualCashflowRows.length){
@@ -44,7 +44,7 @@ function renderAnnualCashflow(p,m){
  const bars=rows.map((row,index)=>{
   const x=L+step*index,barWidth=Math.min(22,(step-20)/2),savingsX=x+step/2-barWidth-3,socialX=x+step/2+3;
   const savingsHeight=chartBottom-y(row.savings),socialHeight=chartBottom-y(row.social),shortfallHeight=(chartBottom-y(row.shortfall));
-  const title=`${row.year}, age ${row.age}. Required savings withdrawal ${money(row.savings)}. Social Security ${money(row.social)}. Spending ${money(row.spending)}.${row.spendingReduced?' Expenses reduced by 50%.':''}${row.shortfall>.01?` Unfunded withdrawal ${money(row.shortfall)}.`:''}`;
+  const title=`${row.year}, age ${row.age}. Required savings withdrawal ${money(row.savings)}. Social Security ${money(row.social)}. Spending ${money(row.spending)}.${row.shortfall>.01?` Unfunded withdrawal ${money(row.shortfall)}.`:''}`;
   return `<g class="annual-year" data-cashflow-age="${row.age}" role="button" tabindex="0" aria-pressed="false" aria-label="${title}"><title>${title}</title><rect class="year-hit" x="${x+1}" y="${T-12}" width="${step-2}" height="${H-T-2}" rx="7" fill="transparent"/><rect x="${savingsX}" y="${y(row.savings)}" width="${barWidth}" height="${savingsHeight}" rx="3" fill="#547653"/>${row.shortfall>.01?`<rect x="${savingsX}" y="${y(row.savings)}" width="${barWidth}" height="${Math.min(savingsHeight,shortfallHeight)}" fill="url(#annual-shortfall-pattern)"/>`:''}<rect x="${socialX}" y="${y(row.social)}" width="${barWidth}" height="${socialHeight}" rx="3" fill="#d2b879"/><text x="${x+step/2}" y="${H-43}" text-anchor="middle" fill="#38503b" font-size="16" font-weight="600">${row.year}</text><text x="${x+step/2}" y="${H-17}" text-anchor="middle" fill="#738369" font-size="15">Age ${row.age}</text></g>`;
  }).join('');
  container.innerHTML=`<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="group" aria-label="Annual required savings withdrawals and Social Security from age ${p.retire} through age 100"><defs><pattern id="annual-shortfall-pattern" width="7" height="7" patternUnits="userSpaceOnUse"><rect width="7" height="7" fill="#e6b9a0"/><path d="M-2 2 L2 -2 M0 7 L7 0 M5 9 L9 5" stroke="#a65f3b" stroke-width="2"/></pattern></defs>${grid}${bars}</svg>`;
