@@ -10,10 +10,10 @@ A responsive retirement planner with investment projections and 3D-style charts.
 - Available annual investment budget based on income minus current living expenses
 - Separate balances and annual returns for stocks, money market funds, and a 401(k)
 - Home and vehicle values, shown separately from retirement funding
-- Retirement age, annual expenses, inflation, and Social Security estimates
+- Retirement age, annual expenses, and Social Security estimates
 - Earliest funded retirement age, modeled monthly budget, and savings depletion age
-- Investment and income charts with future-dollar and today's-dollar views
-- Interactive annual savings-withdrawal and Social Security chart, with exact amounts, inflation views, and unfunded-withdrawal warnings
+- Investment and income charts using the dollar amounts you enter
+- Interactive annual savings-withdrawal and Social Security chart, with exact amounts and unfunded-withdrawal warnings
 - Year-by-year retirement projection
 - Every input starts at zero on each page load; Reset all clears the plan
 
@@ -33,6 +33,6 @@ GitHub Pages is deployed automatically by `.github/workflows/pages.yml` on pushe
 
 ## Projection assumptions
 
-The model uses constant annual returns, proportional contributions and withdrawals, year-end cash flows, and inflation-adjusted income and expenses. Home and vehicle values are excluded from retirement funding. Debt, taxes, account-access restrictions, fees, and market volatility are not modeled. Enter your own financial inputs. Projections are illustrative estimates, not financial advice.
+The model uses constant annual returns, proportional contributions and withdrawals, and year-end cash flows. Annual expenses and passive income remain fixed at the entered amounts. Monthly Social Security remains fixed from the selected starting age onward. Enter larger expenses yourself if you want an extra cushion. Home and vehicle values are excluded from retirement funding. Debt, taxes, account-access restrictions, fees, and market volatility are not modeled. Enter your own financial inputs. Projections are illustrative estimates, not financial advice.
 
 Financial inputs are processed in the browser and are not submitted to a server or restored between visits.

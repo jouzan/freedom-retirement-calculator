@@ -1,10 +1,9 @@
 let annualCashflowRows=[];
 let selectedCashflowAge=null;
 
-function buildAnnualCashflows(p,m,displayMode,baseYear=new Date().getFullYear()){
+function buildAnnualCashflows(p,m,baseYear=new Date().getFullYear()){
  return m.rows.filter(row=>row.age>=p.retire).map(row=>{
-  const scale=displayMode==='real'?row.factor:1;
-  return {age:row.age,year:baseYear+row.age-p.age,savings:Math.max(0,row.expense-row.passive-row.social)/scale,social:row.social/scale,passive:row.passive/scale,spending:row.expense/scale,shortfall:row.shortfall/scale,withdrawal:row.withdrawal/scale};
+  return {age:row.age,year:baseYear+row.age-p.age,savings:Math.max(0,row.expense-row.passive-row.social),social:row.social,passive:row.passive,spending:row.expense,shortfall:row.shortfall,withdrawal:row.withdrawal};
  });
 }
 function selectCashflowYear(age){
@@ -19,9 +18,9 @@ function selectCashflowYear(age){
  $('annual-shortfall').textContent=row.shortfall>.01?`Savings cannot cover ${money(row.shortfall)} of the required withdrawal in ${row.year}. Available savings cover ${money(row.withdrawal)}.`:'';
  document.querySelectorAll('[data-cashflow-age]').forEach(group=>group.setAttribute('aria-pressed',Number(group.dataset.cashflowAge)===row.age?'true':'false'));
 }
-function renderAnnualCashflow(p,m,displayMode){
- annualCashflowRows=m?buildAnnualCashflows(p,m,displayMode):[];
- $('annual-dollar-basis').textContent=displayMode==='real'?"Annual amounts in today’s dollars.":'Annual amounts in future dollars, including your inflation assumption.';
+function renderAnnualCashflow(p,m){
+ annualCashflowRows=m?buildAnnualCashflows(p,m):[];
+ $('annual-description').textContent='Annual amounts based on the figures you enter.';
  const container=$('annual-cashflow-chart');
  const previousScroll=container.scrollLeft;
  if(!annualCashflowRows.length){
