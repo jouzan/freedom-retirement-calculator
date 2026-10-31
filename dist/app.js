@@ -11,10 +11,16 @@ function renderEmpty(p){
  $('countdown').textContent='Start by entering your plan';
  for(const id of ['retire-balance','monthly-expense','monthly-passive','affordable'])$(id).textContent=money(0);
  $('earliest').textContent='—';$('wealth').textContent=money(invested+other);$('invested').textContent=money(invested);$('other').textContent=money(other);$('wealth-ratio').style.width=(invested+other?invested/(invested+other)*100:0)+'%';
- $('runout-title').textContent='Your next chapter starts with a plan';$('runout-text').textContent='Enter your age and retirement age to see your projection.';
+ $('runout-title').textContent='Your next chapter starts with a plan';$('runout-text').textContent=p.social>0&&p.socialAge<18?'Enter your Social Security starting age to complete your projection.':'Enter your age and retirement age to calculate your projection.';
  $('validation').textContent=p.age===0&&p.retire===0?'':p.age<18?'Enter your current age (18 or older).':p.retire<p.age?'Choose a retirement age at or after your current age.':'Enter a Social Security starting age (18 or older).';
- for(const id of ['journey-chart','income-chart','milestone-chart'])$(id).innerHTML='<div class="empty-chart">Your projection will appear here</div>';
- $('income-legend').innerHTML='';$('mix-subtitle').textContent='Annual income at retirement';$('yearly-rows').innerHTML='<tr><td colspan="8">Enter your plan to see the year-by-year projection.</td></tr>';
+ renderPendingCharts(p);
+ $('mix-subtitle').textContent='Annual income at retirement';$('yearly-rows').innerHTML='<tr><td colspan="8">Enter your plan to see the year-by-year projection.</td></tr>';
+}
+function renderPendingCharts(p){
+ const grid=[48,106,164,222].map(y=>`<line x1="68" y1="${y}" x2="374" y2="${y}" stroke="#e4eadc"/><text x="58" y="${y+5}" text-anchor="end" fill="#738369" font-size="16">$0</text>`).join('');
+ $('journey-chart').innerHTML=`<svg viewBox="0 0 400 260" role="img" aria-label="Investment balance chart awaiting your plan"><title>Investment balance chart — enter your ages to calculate a projection</title>${grid}<line x1="68" y1="222" x2="374" y2="222" stroke="#547d4f" stroke-width="3"/><circle cx="68" cy="222" r="5" fill="#547d4f"/><text x="68" y="250" fill="#738369" font-size="16">Today</text><text x="374" y="250" text-anchor="end" fill="#738369" font-size="16">Future</text><text x="221" y="120" text-anchor="middle" fill="#647659" font-size="16">Enter your ages to project</text><text x="221" y="146" text-anchor="middle" fill="#647659" font-size="16">your investment balance</text></svg>`;
+ income(p,{expense:0,passive:0,social:0,factor:1});
+ $('milestone-chart').innerHTML=`<div class="milestone-bars pending-milestones" role="img" aria-label="Retirement milestones awaiting a completed plan">${[[p.age,42],[p.retire,76],[0,104]].map(([age,height])=>`<div class="milestone-column"><strong>${age>0?age:'—'}</strong><div class="column" style="height:${height}px"></div></div>`).join('')}</div><div class="milestone-labels"><span>Your age<br>today</span><span>Selected<br>retirement</span><span>Funding<br>horizon</span></div><p class="note">Complete your plan to calculate the funding horizon.</p>`;
 }
 function render(){const p=read();
 const available=p.income+p.passive-p.currentExpenses;

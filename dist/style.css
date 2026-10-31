@@ -93,3 +93,6 @@
 .yearly td,.yearly th{padding:16px 14px}
 @media(max-width:1150px){#insights .charts{grid-template-columns:repeat(2,minmax(0,1fr))}#insights .milestones{grid-column:1/-1}}
 @media(max-width:740px){#insights .charts{grid-template-columns:minmax(0,1fr)}#insights .milestones{grid-column:auto}#insights h2{font-size:28px}#insights .chart-tabs{margin-top:0}#insights .chart-tabs button{font-size:16px}#insights .section-heading{align-items:flex-start}.yearly{padding:20px}.yearly summary{font-size:18px}}
+
+#insights .pending-milestones .column{background:linear-gradient(90deg,#a9b79b,#d7dfce)}
+#insights .pending-milestones .column:before{background:#e3e9dc}
