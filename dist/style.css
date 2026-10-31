@@ -96,3 +96,25 @@
 
 #insights .pending-milestones .column{background:linear-gradient(90deg,#a9b79b,#d7dfce)}
 #insights .pending-milestones .column:before{background:#e3e9dc}
+
+#insights .annual-cashflow{margin-top:24px;padding:30px;min-width:0}
+#insights .annual-cashflow h3{font-size:26px;margin-top:12px}
+.annual-controls{display:flex;justify-content:space-between;align-items:baseline;gap:20px;flex-wrap:wrap;margin:28px 0 18px;font-size:16px;color:#738369}
+.annual-controls strong{font:700 22px Manrope;color:#38503b}
+.annual-readout{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.annual-readout>div{padding:20px;background:#f3f6ed;border:1px solid #e2e9d8;border-radius:11px;min-width:0}
+.annual-readout span{font-size:16px;line-height:1.5;color:#647659;display:block}
+.annual-readout strong{font:600 32px/1.4 Manrope;letter-spacing:-1px;display:block;overflow-wrap:anywhere;color:#38503b;margin-top:6px}
+.annual-readout>div:nth-child(2){background:#faf7ed;border-color:#eee5cf}
+.annual-legend{display:flex;gap:18px 28px;flex-wrap:wrap;font-size:16px;line-height:1.6;margin:24px 0 10px;color:#647659}
+.annual-legend>span{display:flex;align-items:center}
+#insights .shortfall-key{border-radius:2px;background:repeating-linear-gradient(135deg,#e6b9a0 0 3px,#a65f3b 3px 5px);width:13px;height:13px;flex-shrink:0}
+.annual-chart-scroll{width:100%;overflow-x:auto;overscroll-behavior-x:contain;padding-bottom:10px;scrollbar-color:#9bac85 #eef2e6;scrollbar-width:auto}
+.annual-chart-scroll>svg{display:block;max-width:none}
+.annual-year{cursor:pointer;outline:none}
+.annual-year:hover .year-hit,.annual-year:focus .year-hit,.annual-year[aria-pressed=true] .year-hit{fill:#9eb88115;stroke:#93a879;stroke-width:1}
+.annual-pending svg{display:block;width:100%;min-width:650px;height:210px}
+.annual-passive{font-size:16px;color:#647659;line-height:1.6;margin:16px 0 0}
+.annual-shortfall{font-size:16px;line-height:1.6;color:#9b5736;background:#fbf0e7;border-radius:8px;padding:14px 18px;margin:16px 0 0}
+.annual-passive:empty,.annual-shortfall:empty{display:none}
+@media(max-width:740px){#insights .annual-cashflow{padding:22px 18px}.annual-readout{grid-template-columns:minmax(0,1fr);gap:12px}.annual-readout>div{padding:16px}.annual-readout strong{font-size:30px}.annual-controls{margin-top:22px}.annual-legend{gap:12px 20px}}

@@ -13,6 +13,7 @@ A responsive retirement planner with investment projections and 3D-style charts.
 - Retirement age, annual expenses, inflation, and Social Security estimates
 - Earliest funded retirement age, modeled monthly budget, and savings depletion age
 - Investment and income charts with future-dollar and today's-dollar views
+- Interactive annual savings-withdrawal and Social Security chart, with exact amounts, inflation views, and unfunded-withdrawal warnings
 - Year-by-year retirement projection
 - Every input starts at zero on each page load; Reset all clears the plan
 
