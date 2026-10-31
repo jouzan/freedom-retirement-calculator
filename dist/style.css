@@ -119,3 +119,14 @@
 
 #insights .charts{grid-template-columns:repeat(2,minmax(0,1fr))}
 @media(max-width:740px){#insights .charts{grid-template-columns:minmax(0,1fr)}}
+
+/* Keep the detailed income graph tucked away until it is needed. */
+.annual-summary{display:flex;align-items:center;justify-content:space-between;gap:24px;list-style:none;cursor:pointer}
+.annual-summary::-webkit-details-marker{display:none}
+.annual-toggle{width:36px;height:36px;flex-shrink:0;border:1px solid #dce5d2;border-radius:50%;display:grid;place-items:center;color:#738369;font-size:28px;line-height:1}
+.annual-toggle:before{content:'+'}
+.annual-cashflow[open] .annual-toggle:before{content:'−'}
+.annual-content{margin-top:24px;padding-top:22px;border-top:1px solid #e4eadb}
+.annual-intro{font-size:18px;line-height:1.6;color:#738369;margin:0}
+.inputs .cash-flow{grid-column:1/-1}
+@media(max-width:740px){.annual-summary{gap:16px}#insights .annual-summary h3{font-size:22px}.annual-toggle{width:32px;height:32px;font-size:24px}}

@@ -14,7 +14,7 @@ function renderEmpty(p){
  $('runout-title').textContent='Your next chapter starts with a plan';$('runout-text').textContent=p.social>0&&p.socialAge<18?'Enter your Social Security starting age to complete your projection.':'Enter your age and retirement age to calculate your projection.';
  $('validation').textContent=p.age===0&&p.retire===0?'':p.age<18?'Enter your current age (18 or older).':p.retire<p.age?'Choose a retirement age at or after your current age.':'Enter a Social Security starting age (18 or older).';
  renderPendingCharts(p);renderAnnualCashflow(p,null);
- $('mix-subtitle').textContent='Annual income at retirement';$('yearly-rows').innerHTML='<tr><td colspan="8">Enter your plan to see the year-by-year projection.</td></tr>';
+ $('mix-subtitle').textContent='Annual income at retirement';
 }
 function renderPendingCharts(p){
  const grid=[48,106,164,222].map(y=>`<line x1="68" y1="${y}" x2="374" y2="${y}" stroke="#e4eadc"/><text x="58" y="${y+5}" text-anchor="end" fill="#738369" font-size="16">$0</text>`).join('');
@@ -22,11 +22,11 @@ function renderPendingCharts(p){
  income(p,{expense:0,passive:0,social:0});
 }
 function render(){const p=read();
-const available=p.income+p.passive-p.currentExpenses;
+const available=p.income-p.currentExpenses;
 $('cash-flow-label').textContent=available<0?'Annual cash-flow shortfall':'Available to invest / year';
 $('cash-flow-value').textContent=money(Math.abs(available));
 $('cash-flow-value').classList.toggle('shortfall',available<0);
-$('cash-flow-warning').textContent=available<0?'Your current living expenses exceed your take-home and passive income.':p.savings>available?'Your annual investment amount exceeds the income left after living expenses. Check whether other funding covers the difference.':'';
+$('cash-flow-warning').textContent=available<0?'Your current living expenses exceed your take-home income.':p.savings>available?'Your annual investment amount exceeds the income left after living expenses. Check whether other funding covers the difference.':'';
 if(p.age<18||p.retire<p.age||p.retire===0||(p.social>0&&p.socialAge<18)){renderEmpty(p);return;}$('retire').min=0;$('retire').max=Math.max(85,p.age);$('retire').value=p.retire;$('range-min').textContent=0;const m=FreedomModel.project(p);const r=m.rows.find(r=>r.age===p.retire);const invested=p.stocks+p.money+p['401k'];const other=p.home+p.car1+p.car2+p.car3;
 $('retire-label').textContent=p.retire;$('result-age').textContent=p.retire;$('countdown').textContent=p.retire===p.age?'Your next chapter starts today':`${p.retire-p.age} years to your next chapter`;$('retire-balance').textContent=money(m.retirementBalance);$('monthly-expense').textContent=money(r.expense/12);$('monthly-passive').textContent=money(r.passive/12);$('wealth').textContent=money(invested+other);$('invested').textContent=money(invested);$('other').textContent=money(other);$('wealth-ratio').style.width=(invested+other?invested/(invested+other)*100:0)+'%';
 $('runout-title').textContent=m.runout===null?'Your money lasts through age 100':`Investments run short at age ${m.runout}`;$('runout-text').textContent=m.runout===null?`Your spending is covered through our projection, with ${money(m.rows.at(-1).end)} remaining at 100.`:`Your planned spending exceeds available income and savings ${m.runout-p.retire} years into retirement.`;
@@ -36,7 +36,7 @@ $('earliest').textContent=earliest===null?'Beyond 99':`Age ${earliest}`;
 let low=0,high=Math.max(1000000,p.expenses*2);while(FreedomModel.project({...p,expenses:high}).runout===null&&high<1e10)high*=2;
 for(let i=0;i<35;i++){const mid=(low+high)/2;if(FreedomModel.project({...p,expenses:mid}).runout===null)low=mid;else high=mid;}
 $('affordable').textContent=money(low/12);
-$('yearly-rows').innerHTML=m.rows.filter(row=>row.age>=p.retire).map(row=>`<tr><td>${row.age}</td><td>${money(row.start)}</td><td>${money(row.passive)}</td><td>${money(row.social)}</td><td>${money(row.expense)}</td><td>${money(row.withdrawal)}</td><td class="${row.shortfall>0?'shortfall':''}">${money(row.shortfall)}</td><td>${money(row.end)}</td></tr>`).join('');
+
 journey(p,m);income(p,r);renderAnnualCashflow(p,m);
 }
 function journey(p,m){const W=400,H=260,L=68,R=26,T=42,B=38;const values=m.rows.map(r=>r.start);const max=Math.max(1,...values)*1.12;const x=a=>L+(a-p.age)/(100-p.age)*(W-L-R);const y=v=>H-B-v/max*(H-T-B);const points=m.rows.map((r,i)=>`${x(r.age)},${y(values[i])}`).join(' ');const area=`${L},${H-B} ${points} ${W-R},${H-B}`;let grid='';for(let i=0;i<4;i++){const val=max*i/3,yy=y(val);grid+=`<line x1="${L}" y1="${yy}" x2="${W-R}" y2="${yy}" stroke="#edf0e6"/><text x="${L-8}" y="${yy+5}" text-anchor="end" fill="#a0aa94" font-size="16">${compact(val)}</text>`;}const ticks=[p.age,Math.round(p.age+(100-p.age)/3),Math.round(p.age+2*(100-p.age)/3),100];grid+=ticks.map(a=>`<text x="${x(a)}" y="${H-10}" text-anchor="middle" fill="#9aa58e" font-size="16">${a}</text>`).join('');$('journey-chart').innerHTML=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Projected investment balance from age ${p.age} to 100"><defs><linearGradient id="area" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#a7c58a" stop-opacity=".35"/><stop offset="1" stop-color="#c4d7a7" stop-opacity=".03"/></linearGradient></defs>${grid}<polygon points="${area}" fill="url(#area)"/><polyline points="${points}" transform="translate(0 4)" fill="none" stroke="#c7d5b8" stroke-width="4" opacity=".5"/><polyline points="${points}" fill="none" stroke="#547d4f" stroke-width="2.5" stroke-linejoin="round"/><line x1="${x(p.retire)}" y1="${T}" x2="${x(p.retire)}" y2="${H-B}" stroke="#9aad81" stroke-dasharray="3 4"/><text x="${Math.min(W-80,x(p.retire)+8)}" y="24" font-size="16" fill="#7b9067">Age ${p.retire}</text></svg>`;}

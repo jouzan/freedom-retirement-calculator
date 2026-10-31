@@ -6,15 +6,14 @@ A responsive retirement planner with investment projections and 3D-style charts.
 
 ## Features
 
-- Current age, annual take-home income, current annual living expenses, annual investments, and passive income
+- Current age, annual take-home income, current annual living expenses, and annual investments
 - Available annual investment budget based on income minus current living expenses
 - Separate balances and annual returns for stocks, money market funds, and a 401(k)
 - Home and vehicle values, shown separately from retirement funding
-- Retirement age, annual expenses, and Social Security estimates
+- Retirement age, annual expenses, Social Security estimates, and passive income during retirement
 - Earliest funded retirement age, modeled monthly budget, and savings depletion age
 - Investment and income charts using the dollar amounts you enter
-- Interactive annual savings-withdrawal and Social Security chart, with exact amounts and unfunded-withdrawal warnings
-- Year-by-year retirement projection
+- Collapsible annual savings-withdrawal and Social Security chart, with exact amounts and unfunded-withdrawal warnings
 - Every input starts at zero on each page load; Reset all clears the plan
 
 ## Run locally
@@ -33,6 +32,6 @@ GitHub Pages is deployed automatically by `.github/workflows/pages.yml` on pushe
 
 ## Projection assumptions
 
-The model uses constant annual returns, proportional contributions and withdrawals, and year-end cash flows. Annual expenses and passive income remain fixed at the entered amounts. Monthly Social Security remains fixed from the selected starting age onward. Enter larger expenses yourself if you want an extra cushion. Home and vehicle values are excluded from retirement funding. Debt, taxes, account-access restrictions, fees, and market volatility are not modeled. Enter your own financial inputs. Projections are illustrative estimates, not financial advice.
+The model uses constant annual returns, proportional contributions and withdrawals, and year-end cash flows. Annual expenses remain fixed at the entered amount. Passive income starts at retirement and remains fixed at its entered annual amount. Monthly Social Security remains fixed from the selected starting age onward. Enter larger expenses yourself if you want an extra cushion. Home and vehicle values are excluded from retirement funding. Debt, taxes, account-access restrictions, fees, and market volatility are not modeled. Enter your own financial inputs. Projections are illustrative estimates, not financial advice.
 
 Financial inputs are processed in the browser and are not submitted to a server or restored between visits.
