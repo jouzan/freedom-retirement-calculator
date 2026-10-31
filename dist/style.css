@@ -3,3 +3,5 @@
 .yearly{margin-top:25px;border:1px solid var(--line);border-radius:10px;background:#fff;padding:18px 22px;font-size:11px;color:#76866a}.yearly summary{cursor:pointer;display:flex;justify-content:space-between;list-style:none}.table-scroll{overflow:auto;margin-top:20px}table{width:100%;border-collapse:collapse;font-size:10px;text-align:right;white-space:nowrap}th{font-size:8px;color:#8c997e;font-weight:500}td,th{padding:12px 10px;border-bottom:1px solid var(--line)}td:first-child,th:first-child{text-align:left}.shortfall{color:#b37a4a}
 
 .empty-chart{height:190px;display:grid;place-items:center;color:#8c997e;font-size:11px;text-align:center;background:linear-gradient(180deg,#f9fbf5,white);border-radius:10px;margin-top:15px}
+
+.cash-flow{display:flex;flex-direction:column;justify-content:center;padding:10px 12px;background:#f2f6ec;border:1px solid #e5ebdc;border-radius:7px;color:#71816a;font-size:10px}.cash-flow strong{font:600 19px Manrope;margin:4px 0;color:#38503b}.cash-flow strong.shortfall{color:#b37a4a}.cash-flow small{font-size:8px;color:#89967c;line-height:1.5}

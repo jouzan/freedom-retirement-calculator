@@ -6,7 +6,8 @@ A responsive retirement planner with investment projections and 3D-style charts.
 
 ## Features
 
-- Current age, annual take-home income, annual investments, and passive income
+- Current age, annual take-home income, current annual living expenses, annual investments, and passive income
+- Available annual investment budget based on income minus current living expenses
 - Separate balances and annual returns for stocks, money market funds, and a 401(k)
 - Home and vehicle values, shown separately from retirement funding
 - Retirement age, annual expenses, inflation, and Social Security estimates

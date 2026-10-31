@@ -1,4 +1,4 @@
-const defaults={age:0,income:0,savings:0,passive:0,stocks:0,stocksRate:0,money:0,moneyRate:0,'401k':0,'401kRate':0,home:0,car1:0,car2:0,car3:0,retire:0,expenses:0,socialAge:0,social:0,inflation:0};
+const defaults={age:0,income:0,currentExpenses:0,savings:0,passive:0,stocks:0,stocksRate:0,money:0,moneyRate:0,'401k':0,'401kRate':0,home:0,car1:0,car2:0,car3:0,retire:0,expenses:0,socialAge:0,social:0,inflation:0};
 const $=id=>document.getElementById(id);let mode='nominal';
 const money=n=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(n);
 const compact=n=>n>=1e6?'$'+(n/1e6).toFixed(1)+'m':n>=1000?'$'+Math.round(n/1000)+'k':money(n);
@@ -16,10 +16,16 @@ function renderEmpty(p){
  for(const id of ['journey-chart','income-chart','milestone-chart'])$(id).innerHTML='<div class="empty-chart">Your projection will appear here</div>';
  $('income-legend').innerHTML='';$('mix-subtitle').textContent='Annual income at retirement';$('yearly-rows').innerHTML='<tr><td colspan="8">Enter your plan to see the year-by-year projection.</td></tr>';
 }
-function render(){const p=read();if(p.age<18||p.retire<p.age||p.retire===0||(p.social>0&&p.socialAge<18)){renderEmpty(p);return;}$('retire').min=0;$('retire').max=Math.max(85,p.age);$('retire').value=p.retire;$('range-min').textContent=0;const m=FreedomModel.project(p);const r=m.rows.find(r=>r.age===p.retire);const invested=p.stocks+p.money+p['401k'];const other=p.home+p.car1+p.car2+p.car3;
+function render(){const p=read();
+const available=p.income+p.passive-p.currentExpenses;
+$('cash-flow-label').textContent=available<0?'Annual cash-flow shortfall':'Available to invest / year';
+$('cash-flow-value').textContent=money(Math.abs(available));
+$('cash-flow-value').classList.toggle('shortfall',available<0);
+$('cash-flow-warning').textContent=available<0?'Your current living expenses exceed your take-home and passive income.':p.savings>available?'Your annual investment amount exceeds the income left after living expenses. Check whether other funding covers the difference.':'';
+if(p.age<18||p.retire<p.age||p.retire===0||(p.social>0&&p.socialAge<18)){renderEmpty(p);return;}$('retire').min=0;$('retire').max=Math.max(85,p.age);$('retire').value=p.retire;$('range-min').textContent=0;const m=FreedomModel.project(p);const r=m.rows.find(r=>r.age===p.retire);const invested=p.stocks+p.money+p['401k'];const other=p.home+p.car1+p.car2+p.car3;
 $('retire-label').textContent=p.retire;$('result-age').textContent=p.retire;$('countdown').textContent=p.retire===p.age?'Your next chapter starts today':`${p.retire-p.age} years to your next chapter`;$('retire-balance').textContent=money(m.retirementBalance);$('monthly-expense').textContent=money(r.expense/12);$('monthly-passive').textContent=money(r.passive/12);$('wealth').textContent=money(invested+other);$('invested').textContent=money(invested);$('other').textContent=money(other);$('wealth-ratio').style.width=(invested+other?invested/(invested+other)*100:0)+'%';
 $('runout-title').textContent=m.runout===null?'Your money lasts through age 100':`Investments run short at age ${m.runout}`;$('runout-text').textContent=m.runout===null?`Your spending is covered through our projection, with ${money(m.rows.at(-1).end)} remaining at 100.`:`Your planned spending exceeds available income and savings ${m.runout-p.retire} years into retirement.`;
-$('validation').textContent=p.savings>p.income?'Your annual investment amount exceeds take-home income. Check whether other funding covers the difference.':p.retire<59.5&&p['401k']>0?'This model includes your 401(k). Early access restrictions and penalties are not modeled.':'';
+$('validation').textContent=p.retire<59.5&&p['401k']>0?'This model includes your 401(k). Early access restrictions and penalties are not modeled.':'';
 let earliest=null;for(let a=p.age;a<=99;a++){if(FreedomModel.project({...p,retire:a}).runout===null){earliest=a;break;}}
 $('earliest').textContent=earliest===null?'Beyond 99':`Age ${earliest}`;
 let low=0,high=Math.max(1000000,p.expenses*2);while(FreedomModel.project({...p,expenses:high}).runout===null&&high<1e10)high*=2;
