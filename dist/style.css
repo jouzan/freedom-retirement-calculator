@@ -5,3 +5,26 @@
 .empty-chart{height:190px;display:grid;place-items:center;color:#8c997e;font-size:11px;text-align:center;background:linear-gradient(180deg,#f9fbf5,white);border-radius:10px;margin-top:15px}
 
 .cash-flow{display:flex;flex-direction:column;justify-content:center;padding:10px 12px;background:#f2f6ec;border:1px solid #e5ebdc;border-radius:7px;color:#71816a;font-size:10px}.cash-flow strong{font:600 19px Manrope;margin:4px 0;color:#38503b}.cash-flow strong.shortfall{color:#b37a4a}.cash-flow small{font-size:8px;color:#89967c;line-height:1.5}
+
+/* Make the retirement outcome the most readable part of the planner. */
+.snapshot{padding:32px;container-type:inline-size}
+.kicker{font-size:12px;line-height:1.6;letter-spacing:1.3px}
+.kicker span{font-size:26px}
+.caption{font-size:18px;line-height:1.5;margin-top:30px}
+.big-age{gap:22px}
+.big-age>span:first-child{font-size:112px;line-height:1.1}
+.big-age>span:last-child{font-size:24px}
+.countdown{font-size:16px;line-height:1.5;padding:12px 15px;margin-top:20px}
+.result-rule{margin:32px 0 8px}
+.result-row{display:grid;grid-template-columns:minmax(0,1fr);gap:10px;margin:0;padding:24px 0;border-bottom:1px solid #ffffff18;font-size:18px;line-height:1.45;color:#c7dacb}
+.result-row>span{min-width:0}
+.result-row strong{font-size:clamp(32px,10cqi,44px);font-weight:600;line-height:1.15;letter-spacing:-1px;font-variant-numeric:tabular-nums;white-space:normal;overflow-wrap:anywhere}
+.result-row small{font-size:14px;line-height:1.55;color:#afc9b8;margin-top:5px}
+.longevity{gap:16px;padding:22px 18px;margin-top:28px;border-radius:12px}
+.longevity>span{font-size:40px;line-height:1.2}
+.longevity>div{min-width:0}
+.longevity strong{font-size:22px;line-height:1.4;font-weight:600}
+.longevity p{font-size:16px;line-height:1.7;margin-top:10px;color:#c2d6c7}
+.snapshot-footer{font-size:17px;line-height:1.6;margin-top:26px}
+@media(max-width:1000px) and (min-width:741px){.snapshot{padding:24px}.kicker{font-size:11px}.longevity{padding:18px 14px;gap:10px}.longevity strong{font-size:20px}}
+@media(max-width:400px){.snapshot{padding:24px}.result-row strong{font-size:34px}.big-age>span:first-child{font-size:100px}.longevity{padding:18px 14px;gap:10px}}
