@@ -9,6 +9,7 @@ function renderEmpty(p){
  const invested=p.stocks+p.money+p['401k'],other=p.home+p.car1+p.car2+p.car3;
  $('retire-label').textContent=p.retire;$('result-age').textContent=p.retire;
  $('countdown').textContent='Start by entering your plan';
+ $('spending-adjustment-note').textContent='Enter your plan to see when the lower spending starts.';$('budget-description').textContent='funded through age 100';
  for(const id of ['retire-balance','monthly-expense','monthly-passive','affordable'])$(id).textContent=money(0);
  $('earliest').textContent='—';$('wealth').textContent=money(invested+other);$('invested').textContent=money(invested);$('other').textContent=money(other);$('wealth-ratio').style.width=(invested+other?invested/(invested+other)*100:0)+'%';
  $('runout-title').textContent='Your next chapter starts with a plan';$('runout-text').textContent=p.social>0&&p.socialAge<18?'Enter your Social Security starting age to complete your projection.':'Enter your age and retirement age to calculate your projection.';
@@ -30,11 +31,14 @@ $('cash-flow-warning').textContent=available<0?'Your current living expenses exc
 if(p.age<18||p.retire<p.age||p.retire===0||(p.social>0&&p.socialAge<18)){renderEmpty(p);return;}$('retire').min=0;$('retire').max=Math.max(85,p.age);$('retire').value=p.retire;$('range-min').textContent=0;const m=FreedomModel.project(p);const r=m.rows.find(r=>r.age===p.retire);const invested=p.stocks+p.money+p['401k'];const other=p.home+p.car1+p.car2+p.car3;
 $('retire-label').textContent=p.retire;$('result-age').textContent=p.retire;$('countdown').textContent=p.retire===p.age?'Your next chapter starts today':`${p.retire-p.age} years to your next chapter`;$('retire-balance').textContent=money(m.retirementBalance);$('monthly-expense').textContent=money(r.expense/12);$('monthly-passive').textContent=money(r.passive/12);$('wealth').textContent=money(invested+other);$('invested').textContent=money(invested);$('other').textContent=money(other);$('wealth-ratio').style.width=(invested+other?invested/(invested+other)*100:0)+'%';
 $('runout-title').textContent=m.runout===null?'Your money lasts through age 100':`Investments run short at age ${m.runout}`;$('runout-text').textContent=m.runout===null?`Your spending is covered through our projection, with ${money(m.rows.at(-1).end)} remaining at 100.`:`Your planned spending exceeds available income and savings ${m.runout-p.retire} years into retirement.`;
+$('spending-adjustment-note').textContent=m.reductionStartAge===null?'Your original spending plan is funded through age 100, so no reduction is triggered in this projection.':`Original funding shortfall: age ${m.baselineRunout}. From age ${m.reductionStartAge} onward, annual expenses drop from ${money(m.originalExpenses)} to ${money(m.reducedExpenses)}. The updated projection includes this reduction.`;
+$('budget-description').textContent=m.reductionStartAge===null?'funded through age 100':`starting budget · 50% from age ${m.reductionStartAge}`;
+const spendingRule={reductionStartAge:m.reductionStartAge};
 $('validation').textContent=p.retire<59.5&&p['401k']>0?'This model includes your 401(k). Early access restrictions and penalties are not modeled.':'';
-let earliest=null;for(let a=p.age;a<=99;a++){if(FreedomModel.project({...p,retire:a}).runout===null){earliest=a;break;}}
+let earliest=null;for(let a=p.age;a<=99;a++){if(FreedomModel.project({...p,retire:a},spendingRule).runout===null){earliest=a;break;}}
 $('earliest').textContent=earliest===null?'Beyond 99':`Age ${earliest}`;
-let low=0,high=Math.max(1000000,p.expenses*2);while(FreedomModel.project({...p,expenses:high}).runout===null&&high<1e10)high*=2;
-for(let i=0;i<35;i++){const mid=(low+high)/2;if(FreedomModel.project({...p,expenses:mid}).runout===null)low=mid;else high=mid;}
+let low=0,high=Math.max(1000000,p.expenses*2);while(FreedomModel.project({...p,expenses:high},spendingRule).runout===null&&high<1e10)high*=2;
+for(let i=0;i<35;i++){const mid=(low+high)/2;if(FreedomModel.project({...p,expenses:mid},spendingRule).runout===null)low=mid;else high=mid;}
 $('affordable').textContent=money(low/12);
 
 journey(p,m);income(p,r);renderAnnualCashflow(p,m);

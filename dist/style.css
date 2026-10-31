@@ -143,3 +143,7 @@
  .hero-art .s4{left:294px}
  .hero-art .art-note{left:72px}
 }
+
+.spending-adjustment{margin-top:20px;padding:18px 20px;background:#f1f5e9;border:1px solid #dce6ce;border-radius:10px}
+.spending-adjustment strong{font-size:18px;line-height:1.5;color:#38503b}
+.spending-adjustment p{font-size:16px;line-height:1.7;color:#647659;margin:8px 0 0}
