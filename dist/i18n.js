@@ -2,6 +2,7 @@
 const I18n = (() => {
  const hebrew = {
  "$": "₪",
+ "after tax": " לאחר מס",
  "Retirement planner": "תכנון פרישה",
  "Your insights": "התובנות שלך",
  "● Your numbers stay on this device": "● הנתונים שלך נשארים במכשיר הזה",
