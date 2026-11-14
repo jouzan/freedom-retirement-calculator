@@ -16,6 +16,10 @@ A responsive retirement planner with investment projections and 3D-style charts.
 - Collapsible annual savings-withdrawal and Social Security chart, with exact amounts and unfunded-withdrawal warnings
 - Every input starts at zero on each page load; Reset all clears the plan
 
+## Languages
+
+Use the **עברית / English** button to switch the entire planner, results, and charts. Hebrew uses a right-to-left layout. The language preference is saved locally; entered financial values stay in memory and are preserved when switching. Open `?lang=he` for Hebrew directly. Amounts remain in USD, with the same U.S. 401(k) and Social Security assumptions in both languages.
+
 ## Run locally
 
 Open `Freedom Calculator.html` directly in a browser, or serve the editable files:

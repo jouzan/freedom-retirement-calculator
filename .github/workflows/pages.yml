@@ -25,6 +25,7 @@ jobs:
         uses: actions/checkout@v4
       - name: Check JavaScript syntax
         run: |
+          node --check dist/i18n.js
           node --check dist/model.js
           node --check dist/app.js
           node --check dist/cashflow.js
