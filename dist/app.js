@@ -1,8 +1,8 @@
 const defaults={age:0,income:0,currentExpenses:0,savings:0,passive:0,stocks:0,stocksRate:0,money:0,moneyRate:0,'401k':0,'401kRate':0,home:0,car1:0,car2:0,car3:0,retire:0,expenses:0,socialAge:0,social:0};
 const $=id=>document.getElementById(id);
-const money=n=>new Intl.NumberFormat(I18n.locale,{style:'currency',currency:'USD',maximumFractionDigits:0}).format(n);
-const compact=n=>n>=1e6?'$'+(n/1e6).toFixed(1)+t('m'):n>=1000?'$'+Math.round(n/1000)+t('k'):money(n);
-$('investments').innerHTML=[['stocks','↗','Stocks & ETFs'],['money','≋','Money market'],['401k','▥','401(k)']].map(([k,icon,title])=>`<div class="investment-row"><span class="investment-name"><span class="asset-icon">${icon}</span><span data-asset-label="${k}">${t(title)}</span></span><label class="field"><span>$</span><input id="${k}" type="number" min="0" step="1000" aria-label="${t('{asset} balance',{asset:t(title)})}"></label><label class="field"><input id="${k}Rate" type="number" min="-50" max="50" step="0.1" aria-label="${t('{asset} annual return',{asset:t(title)})}"><span>%</span></label></div>`).join('');
+const money=n=>new Intl.NumberFormat(I18n.locale,{style:'currency',currency:I18n.currency,maximumFractionDigits:0}).format(n);
+const compact=n=>n>=1e6?I18n.currencySymbol+(n/1e6).toFixed(1)+t('m'):n>=1000?I18n.currencySymbol+Math.round(n/1000)+t('k'):money(n);
+$('investments').innerHTML=[['stocks','↗','Stocks & ETFs'],['money','≋','Money market'],['401k','▥','401(k)']].map(([k,icon,title])=>`<div class="investment-row"><span class="investment-name"><span class="asset-icon">${icon}</span><span data-asset-label="${k}">${t(title)}</span></span><label class="field"><span data-currency>${I18n.currencySymbol}</span><input id="${k}" type="number" min="0" step="1000" aria-label="${t('{asset} balance',{asset:t(title)})}"></label><label class="field"><input id="${k}Rate" type="number" min="-50" max="50" step="0.1" aria-label="${t('{asset} annual return',{asset:t(title)})}"><span>%</span></label></div>`).join('');
 for(const[k,v]of Object.entries(defaults))$(k).value=v;
 function read(){const p={};for(const k of Object.keys(defaults)){const el=$(k);let v=Number(el.value);v=Math.min(Number(el.max||1e10),Math.max(Number(el.min||0),Number.isFinite(v)?v:0));p[k]=v;}p.age=Math.round(p.age);p.retire=Math.round(p.retire);p.socialAge=Math.round(p.socialAge);return p;}
 function renderEmpty(p){
@@ -17,11 +17,11 @@ function renderEmpty(p){
  $('mix-subtitle').textContent=t("Annual income at retirement");
 }
 function renderPendingCharts(p){
- const grid=[48,106,164,222].map(y=>`<line x1="68" y1="${y}" x2="374" y2="${y}" stroke="#e4eadc"/><text x="58" y="${y+5}" text-anchor="end" fill="#738369" font-size="16">$0</text>`).join('');
+ const grid=[48,106,164,222].map(y=>`<line x1="68" y1="${y}" x2="374" y2="${y}" stroke="#e4eadc"/><text x="58" y="${y+5}" text-anchor="end" fill="#738369" font-size="16">${money(0)}</text>`).join('');
  $('journey-chart').innerHTML=`<svg viewBox="0 0 400 260" role="img" aria-label="${t("Investment balance chart awaiting your plan")}"><title>${t("Investment balance chart \u2014 enter your ages to calculate a projection")}</title>${grid}<line x1="68" y1="222" x2="374" y2="222" stroke="#547d4f" stroke-width="3"/><circle cx="68" cy="222" r="5" fill="#547d4f"/><text x="68" y="250" fill="#738369" font-size="16">${t("Today")}</text><text x="374" y="250" text-anchor="end" fill="#738369" font-size="16">${t("Future")}</text><text x="221" y="120" text-anchor="middle" fill="#647659" font-size="16">${t("Enter your ages to project")}</text><text x="221" y="146" text-anchor="middle" fill="#647659" font-size="16">${t("your investment balance")}</text></svg>`;
  income(p,{expense:0,passive:0,social:0});
 }
-function updateInvestmentLabels(){for(const [key,label] of [['stocks','Stocks & ETFs'],['money','Money market'],['401k','401(k)']]){document.querySelector(`[data-asset-label="${key}"]`).textContent=t(label);$(key).setAttribute('aria-label',t('{asset} balance',{asset:t(label)}));$(key+'Rate').setAttribute('aria-label',t('{asset} annual return',{asset:t(label)}));}}
+function updateInvestmentLabels(){document.querySelectorAll('[data-currency]').forEach(node=>node.textContent=I18n.currencySymbol);for(const [key,label] of [['stocks','Stocks & ETFs'],['money','Money market'],['401k','401(k)']]){document.querySelector(`[data-asset-label="${key}"]`).textContent=t(label);$(key).setAttribute('aria-label',t('{asset} balance',{asset:t(label)}));$(key+'Rate').setAttribute('aria-label',t('{asset} annual return',{asset:t(label)}));}}
 function render(){updateInvestmentLabels();const p=read();
 const available=p.income-p.currentExpenses;
 $('cash-flow-label').textContent=available<0?t("Annual cash-flow shortfall"):t("Available to invest / year");

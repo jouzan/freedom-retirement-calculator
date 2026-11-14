@@ -1,6 +1,7 @@
 // Presentation-only translations. The financial model is shared by both languages.
 const I18n = (() => {
  const hebrew = {
+ "$": "₪",
  "Retirement planner": "תכנון פרישה",
  "Your insights": "התובנות שלך",
  "● Your numbers stay on this device": "● הנתונים שלך נשארים במכשיר הזה",
@@ -164,6 +165,6 @@ const I18n = (() => {
  try { initial = new URLSearchParams(location.search).get('lang') || localStorage.getItem('freedom-language') || 'en'; } catch {}
  document.getElementById('language-toggle').addEventListener('click', () => setLanguage(language === 'he' ? 'en' : 'he'));
  setLanguage(initial, false);
- return {t: translate, setLanguage, get language() { return language; }, get locale() { return language === 'he' ? 'he-IL' : 'en-US'; }};
+ return {t: translate, setLanguage, get language() { return language; }, get locale() { return language === 'he' ? 'he-IL' : 'en-US'; }, get currency() { return language === 'he' ? 'ILS' : 'USD'; }, get currencySymbol() { return language === 'he' ? '₪' : '$'; }};
 })();
 const t = (key, values) => I18n.t(key, values);

@@ -18,7 +18,7 @@ A responsive retirement planner with investment projections and 3D-style charts.
 
 ## Languages
 
-Use the **עברית / English** button to switch the entire planner, results, and charts. Hebrew uses a right-to-left layout. The language preference is saved locally; entered financial values stay in memory and are preserved when switching. Open `?lang=he` for Hebrew directly. Amounts remain in USD, with the same U.S. 401(k) and Social Security assumptions in both languages.
+Use the **עברית / English** button to switch the entire planner, results, and charts. Hebrew uses a right-to-left layout. The language preference is saved locally; entered financial values stay in memory and are preserved when switching. Open `?lang=he` for Hebrew directly. Hebrew displays Israeli shekels (ILS, ₪); English displays US dollars (USD, $). Switching languages keeps the same numeric amounts without exchange-rate conversion. The same U.S. 401(k) and Social Security assumptions apply in both languages.
 
 ## Run locally
 
